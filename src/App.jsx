@@ -1,33 +1,43 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import Marketplace from './pages/Marketplace';
 
-function App() {
-  return (
-    <>
-      <header>
-        <h1>Tuneza</h1>
+export default function App() {
+const [searchQuery, setSearchQuery] = useState('');
+const [cartCount, setCartCount] = useState(0);
+const [wishCount, setWishCount] = useState(0);
 
-        <nav>
-          <Link to="/">Home</Link>
-          {' | '}
-          <Link to="/shop">Shop</Link>
-          {' | '}
-          <Link to="/marketplace">Marketplace</Link>
-        </nav>
-      </header>
+return (
+<BrowserRouter>
+<Header
+     cartCount={cartCount}
+     wishCount={wishCount}
+     searchQuery={searchQuery}
+     setSearchQuery={setSearchQuery}
+   />
 
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/marketplace" element={<Marketplace />} />
-        </Routes>
-      </main>
-    </>
-  );
+  <Routes>
+    <Route path="/" element={<Home />} />
+
+    <Route
+      path="/shop"
+      element={<Shop searchQuery={searchQuery} />}
+    />
+
+    <Route
+      path="/marketplace"
+      element={<Marketplace searchQuery={searchQuery} />}
+    />
+  </Routes>
+
+  <Footer />
+</BrowserRouter>
+
+);
 }
-
-export default App;
